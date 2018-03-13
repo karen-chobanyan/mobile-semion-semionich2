@@ -6,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClientModule, HttpClient} from "@angular/common/http";
+import {AccountsModule} from 'angular2-meteor-accounts-ui';
 import {Constants} from "../../../both/Constants";
 import {AppComponent} from "./app.component";
 import {SplashScreen} from "@ionic-native/splash-screen";
@@ -13,9 +14,13 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {HomePage} from "./pages/home/home";
 import {DemoComponent} from "./components/demo/demo.component";
 import {DemoDataService} from "./components/demo/demo-data.service";
+import {ProductsDataService} from "./components/products/products-data.service";
 import {WelcomeHeaderComponent} from "./components/welcome-header/welcome-header";
 import {LanguageSelectComponent} from "./components/language-select/language-select";
+import {ProductsComponent} from "./components/products/products.component";
+import {CartComponent} from "./components/cart/cart.component";
 import {NewPagePage} from "./pages/newpage/newpage";
+import {CartDataService} from "./components/cart/cart-data.service";
 
 @NgModule({
     // Components/Pages, Pipes, Directive
@@ -25,7 +30,9 @@ import {NewPagePage} from "./pages/newpage/newpage";
         NewPagePage,
         DemoComponent,
         WelcomeHeaderComponent,
-        LanguageSelectComponent
+        LanguageSelectComponent,
+        ProductsComponent,
+        CartComponent
     ],
     // Pages
     entryComponents: [
@@ -35,6 +42,8 @@ import {NewPagePage} from "./pages/newpage/newpage";
     // Providers
     providers: [
         DemoDataService,
+        ProductsDataService,
+        CartDataService,
         {
             provide: ErrorHandler,
             useClass: IonicErrorHandler
@@ -47,6 +56,7 @@ import {NewPagePage} from "./pages/newpage/newpage";
         BrowserModule,
         FormsModule,
         HttpClientModule,
+        AccountsModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

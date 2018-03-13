@@ -61,6 +61,7 @@ export class AppComponent extends MeteorComponent implements OnInit {
             // Meteor.user() is a reactive variable.
             if (Meteor.user()) {
                 // Do something when user is present after initialization or after log in.
+                Session.set(Constants.SESSION.USER, this.user);
             }
         }));
 

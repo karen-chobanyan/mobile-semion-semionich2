@@ -31,7 +31,7 @@ $colors: (
         navbar: $color-primary
 );
 
-$background-color: #c0c0c0;
+$background-color: #f0f0f0;
 
 @each $color in $colors {
   [background-color="#{nth($color, 1)}"] {

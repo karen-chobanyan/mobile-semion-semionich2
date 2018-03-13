@@ -1,0 +1,41 @@
+
+  <ul class="list toplist print-dis-n">
+    <li class="item row heading">
+      <div class="col col-50 name">{{ 'Name' | translate }}</div>
+      <div class="col col-20 qtty">Кол.</div>
+      <div class="col col-20 price">{{ 'Price' | translate }}</div>
+      <div class="col col-10 total ">{{'Total' | translate }}</div>
+    </li>
+  </ul>
+  <div direction="y" class="scroll-content ionic-scroll cheque-scroll-area">
+    <ion-list class="list scr-content">
+      <ion-item class="item row animate-repeat" *ngFor="let item of cartData">
+        <div class="col col-50 name">{{item.name}}</div>
+        <div class="col col-20 qtty">
+          <ion-icon ios="ios-remove-circle" md="md-remove-circle"></ion-icon> <span>{{item.cartCount}}</span>
+          <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
+        </div>
+        <div class="col col-20 price text-center">{{item.price}}</div>
+        <div class="col col-10 total">{{item.cartCount * item.price}}</div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="actions print-dis-n">
+    <div class="row">
+      <div class="col total-to-pay" style="padding-left:0; margin-left: 0">
+        <h5 style="float: left; text-align: left; width:45%">{{'В Кассе' | translate }} : <span>cashbox.cashInBox || 0 руб.</span></h5>
+        <h5>{{'Total' | translate }} : <span>total || 0 руб.</span> </h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-20">
+
+      </div>
+      <div class="col col-80">
+        <button  class="button button-full  ion-chevron-right icon-right button-balanced ">
+          'Make Payment' | translate 
+        </button>
+      </div>
+    </div>
+  </div>
+

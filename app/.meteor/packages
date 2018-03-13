@@ -25,3 +25,5 @@ angular-compilers
 accounts-password
 session
 fortawesome:fontawesome
+cfs:gridfs
+cfs:standard-packages

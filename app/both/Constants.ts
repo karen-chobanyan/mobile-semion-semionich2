@@ -7,7 +7,8 @@ export class Constants {
         PLATFORM_READY: "platformReady",
         TRANSLATIONS_READY: "translationsReady",
         PATH: "path",
-        URL_PARAMS: "urlParams"
+        URL_PARAMS: "urlParams",
+        CARTITEMS: []
     };
     public static DEVICE:any = {
         IOS: "iOS",
