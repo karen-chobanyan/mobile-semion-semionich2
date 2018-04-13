@@ -1,17 +1,22 @@
 <div class="breadcrumbs">
   <ul>
-    <li class="bread pointer" click="cashbox.resetToCart()">{{'All Products' | translate }}</li>
-    <li class="bread pointer" *ngFor="let crumb of crumbs">crumb.name</li>
+    <li class="bread pointer" (click)="resetCategory()">{{'All Products' | translate }}</li>
+    <li *ngFor="let item of categoriesData | async"  class="bread pointer" data-id="{{item.id}}" (click)="selectCategory(item.id)">{{item.name}}</li>
+      
+    <!-- <li class="bread pointer" *ngFor="let crumb of crumbs">crumb.name</li> -->
   </ul>
 </div>
+  <div class="clearfix"></div>
 <div direction="y" class="cachbox-right-scroll">
   <div class="products-w">
     <ul class="products">
-      <li *ngFor="let item of data | async"  class="product text-center" data-id="{{item.id}}" (click)="addToCart(item)">
+      <li *ngFor="let item of productsData | async | fiterByCat:selectedCat"  class="product text-center" data-id="{{item.id}}" (click)="addToCart(item)">
         <img src="{{item.image_url || '/logo.jpg'}}" alt="" />
         <span class="overPrice" ng-if="item.price">{{item.price}}руб.</span>
         <h4>{{item.name}}</h4>
       </li>
+      <li style="clear:both; height: 0 !important; width:100%; display:block"></li>
     </ul>
   </div>
+  <div class="clearfix"></div>
 </div>

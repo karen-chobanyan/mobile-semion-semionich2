@@ -6,7 +6,8 @@
     "yes": "YES",
     "cancel": "Cancel",
     "continue": "Continue",
-    "accept": "Accept"
+    "accept": "Accept",
+    "New Transaction": "Создать транзакцию"
   },
   "page-home": {
     "title": "Home",

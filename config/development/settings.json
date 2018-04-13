@@ -1,7 +1,0 @@
-{
-  "public": {
-    "appName": "App Name"
-  },
-
-  "sample": "config/development/settings.json"
-}

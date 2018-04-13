@@ -1,39 +1,120 @@
 <ion-menu #leftMenu [content]="content">
-    <ion-header>
-        <ion-toolbar color="navbar">
-            <ion-title>{{appName}}</ion-title>
-        </ion-toolbar>
-    </ion-header>
+  <ion-header>
+    <ion-toolbar color="navbar">
+      <ion-title>Семён Семёныч</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <ion-content>
-        <ion-list background-color="white">
-            <div *ngIf="!user && noUserPages && noUserPages.length > 0">
-                <button ion-item text-wrap
-                        *ngFor="let noUserPage of noUserPages"
-                        (click)="openPage(noUserPage)">
-                    <ion-icon name="{{noUserPage.icon}}" item-left color="primary"></ion-icon>
-                    {{noUserPage.title | translate}}
+  <ion-content>
+    <ion-list background-color="white">
+      <div class="">
+        <button ion-item text-wrap (click)="openTransactionModal()" *ngIf="!!user">
+                   <ion-icon ios="ios-cash" md="md-cash" item-left color="primary"></ion-icon>
+                    {{"New Transaction" | translate:general}}
                 </button>
-            </div>
-            <div *ngIf="user && userPages && userPages.length > 0">
-                <button ion-item text-wrap
-                        *ngFor="let userPage of userPages"
-                        (click)="openPage(userPage)">
-                    <ion-icon name="{{userPage.icon}}" item-left color="primary"></ion-icon>
-                    {{userPage.title | translate}}
+      </div>
+
+      <div class="">
+        <button ion-item text-wrap (click)="printLatestCheque()" *ngIf="!!user">
+                   <ion-icon ios="ios-copy" md="md-copy" item-left color="primary"></ion-icon>
+                    {{"Print Latest Cheque" | translate}}
                 </button>
-            </div>
-            <div *ngIf="pages && pages.length > 0">
-                <button ion-item text-wrap
-                        *ngFor="let page of pages"
-                        (click)="openPage(page)">
-                    <ion-icon name="{{page.icon}}" item-left color="primary"></ion-icon>
-                    {{page.title | translate}}
+      </div>
+      <div class="">
+        <button ion-item text-wrap (click)="printDailyReport()" *ngIf="!!user">
+                   <ion-icon ios="ios-print" md="md-print" item-left color="primary"></ion-icon>
+                    {{"Print Daily Report" | translate}}
                 </button>
-            </div>
-        </ion-list>
-    </ion-content>
+      </div>
+      <div class="">
+        <button ion-item text-wrap (click)="openCloseSession()" *ngIf="!!user">
+                  <ion-icon ios="ios-clock" md="md-clock"   item-left color="primary"></ion-icon>
+                    {{"Close Session" | translate}}
+                </button>
+      </div>
+      <div class="">
+        <button ion-item text-wrap (click)="logOut()">
+                  <ion-icon ios="ios-log-out" md="md-log-out"  item-left color="primary"></ion-icon>
+                    {{"Log Out" | translate}}
+                </button>
+      </div>
+      <!-- <div class="session-info">
+        {{"Total Sales" | translate}} --- {{ total_sales || 0}} руб.
+      </div>
+      <div class="session-info">
+        {{"By Credit Card" | translate}} --- {{ localSession.creditCard || 0}} руб.
+      </div>
+      <div class="session-info">
+        {{"In Cashbox" | translate}} --- {{ localSession.cash || 0}} руб.
+      </div> -->
+    </ion-list>
+  </ion-content>
 
 </ion-menu>
+
+<div class="close-session-w" [hidden]="closeSessionHidden">
+  <div class="modal cashbox-trmodal">
+    <h2>{{'Close the Session' | translate }}</h2>
+    <label class="item item-input">
+    <input type="number" name="amount" value="" [(ngModel)]="closeAmount" placeholder="{{'Amount in Cashbox' | translate}}">
+  </label>
+    <label class="item item-input">
+    <input type="text" name="comment" value="" [(ngModel)]="closeComment" placeholder="{{'Comment' | translate}}">
+  </label>
+    <div class="row print-dis-n">
+      <div class="col col-50">
+        <button class="cancel" (click)="cancelCloseSession()" [disabled]="closing">{{'Cancel' | translate }} <ion-icon ios="ios-close" md="md-close"></ion-icon></button>
+      </div>
+      <div class="col col-50 text-right">
+        <button (click)="closeSession()" class="button button-full  ion-chevron-right icon-right button-balanced close-session" [disabled]="closing" [ngClass]="{'loading' : closing}">
+        {{'Close Session' | translate }} <ion-icon name="arrow-forward"></ion-icon>
+
+      </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="transactions-w" [hidden]="transactionsModalHidden">
+  <div class="modal cashbox-trmodal">
+    <h2>{{'Create a transaction' | translate }}</h2>
+      <ion-list radio-group [(ngModel)]="transactionType">
+        <ion-item>
+          <ion-label>{{'Outcome' | translate}}</ion-label>
+          <ion-radio value="outcome" checked></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{'Income' | translate}}</ion-label>
+          <ion-radio value="income"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{'Enacshement' | translate}}</ion-label>
+          <ion-radio value="enacshement" [disabled]="isDisabled"></ion-radio>
+        </ion-item>
+      </ion-list>
+
+    <br>
+    <div class="clearfix">
+      
+    </div>
+    <label class="item item-input">
+      <input type="number" value="" [(ngModel)]="transactionAmount" placeholder="{{'Amount' | translate}}">
+    </label>
+    <label class="item item-input">
+      <input type="text"  value="" [(ngModel)]="transactionComment" placeholder="{{'Comment' | translate}}">
+    </label>
+    <div class="row print-dis-n">
+      <div class="col col-50">
+        <button class="cancel" (click)="closeTransactionModal()">{{'Cancel' | translate }} <ion-icon ios="ios-close" md="md-close"></ion-icon></button>
+      </div>
+      <div class="col col-50 text-right">
+        <button (click)="createTransaction()" class="button button-full  ion-chevron-right icon-right button-balanced create-transaction">
+        {{'Create Transaction' | translate }} <ion-icon name="arrow-forward"></ion-icon>
+
+      </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <ion-nav [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>

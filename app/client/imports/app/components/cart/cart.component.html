@@ -1,10 +1,9 @@
-
   <ul class="list toplist print-dis-n">
     <li class="item row heading">
       <div class="col col-50 name">{{ 'Name' | translate }}</div>
-      <div class="col col-20 qtty">Кол.</div>
-      <div class="col col-20 price">{{ 'Price' | translate }}</div>
-      <div class="col col-10 total ">{{'Total' | translate }}</div>
+      <div class="col col-20 qtty text-center">{{ 'Qty.' | translate }}</div>
+      <div class="col col-20 price text-center">{{ 'Price' | translate }}</div>
+      <div class="col col-10 total text-center">{{'Total' | translate }}</div>
     </li>
   </ul>
   <div direction="y" class="scroll-content ionic-scroll cheque-scroll-area">
@@ -12,30 +11,91 @@
       <ion-item class="item row animate-repeat" *ngFor="let item of cartData">
         <div class="col col-50 name">{{item.name}}</div>
         <div class="col col-20 qtty">
-          <ion-icon ios="ios-remove-circle" md="md-remove-circle"></ion-icon> <span>{{item.cartCount}}</span>
-          <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
+          <ion-icon (click)="decCount(item)" ios="ios-remove-circle" md="md-remove-circle"></ion-icon> <span>{{item.cartCount}}</span>
+          <ion-icon (click)="incCount(item)" ios="ios-add-circle" md="md-add-circle"></ion-icon>
         </div>
         <div class="col col-20 price text-center">{{item.price}}</div>
-        <div class="col col-10 total">{{item.cartCount * item.price}}</div>
+        <div class="col col-10 total text-center">{{item.cartCount * item.price}}</div>
       </ion-item>
     </ion-list>
   </div>
   <div class="actions print-dis-n">
     <div class="row">
-      <div class="col total-to-pay" style="padding-left:0; margin-left: 0">
-        <h5 style="float: left; text-align: left; width:45%">{{'В Кассе' | translate }} : <span>cashbox.cashInBox || 0 руб.</span></h5>
-        <h5>{{'Total' | translate }} : <span>total || 0 руб.</span> </h5>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col col-20">
+      <div class="col col-50">
+        <button (click)="showCashModal()" class="button button-full">
+          {{ 'Make Payment' | translate }} <ion-icon name="arrow-forward"></ion-icon>
 
-      </div>
-      <div class="col col-80">
-        <button  class="button button-full  ion-chevron-right icon-right button-balanced ">
-          'Make Payment' | translate 
         </button>
+      </div>
+      <div class="col col-50 text-right">
+        <h5>{{'Total' | translate }} : <span>{{ cartTotal || 0  }}руб.</span> </h5>
+        <h6>{{"In Cashbox" | translate}} --- {{ localSession.cash || 0}} руб.</h6>
       </div>
     </div>
   </div>
 
+  <div class="modal cashbox-modal" *ngIf="!cashModal">
+  <div id="printing">
+    <div class="box print-check" id="print-part">
+      <div class="row">
+        <div class="col col-50">
+          <h2>{{'Total Payable' | translate }}</h2>
+        </div>
+        <div class="col col-50 text-right">
+          <h2 class="total-val">{{ cartTotal }}</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-50">
+          <h2>{{'К Оплате' | translate }}</h2>
+        </div>
+        <div class="col col-50 text-right">
+          <h2 class="total-val">{{ superTotal }}</h2>
+        </div>
+      </div>
+      <div class="row dis-flex2">
+        <div class="col col-50 dis-flex">
+          <h2>{{'Cash' | translate }}</h2>
+        </div>
+        <div class="col col-50 text-right">
+          <input id="CashBox" type="number" class=" text-right" name="cashe" value="0" [(ngModel)]="cash">
+        </div>
+      </div>
+      <div class="row dis-flex2">
+        <div class="col col-50 dis-flex">
+          <h2>{{'Change' | translate }}</h2>
+        </div>
+        <div class="col col-50 text-right">
+          <h2>{{cash - superTotal || 0}}</h2>
+        </div>
+      </div>
+      <div class="row print-dis-n">
+        <ion-item>
+          <ion-label>{{'Credit Card' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="creditCard"></ion-toggle>
+        </ion-item>
+      </div>
+      <div class="row print-dis-n">
+        <ion-item>
+          <ion-label>{{'Client' | translate }}</ion-label>
+          <ion-select [(ngModel)]="selectedClient" interface="action-sheet" placeholder="Client" (ionChange)="reacalculateSuper()">
+            <ion-option  value="0" selected="true"> = = = = = </ion-option>
+            <ion-option *ngFor="let client of clientsData | async" value="{{client.id}}">{{client.name}} - Скидка {{client.percent}}%</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+      <div class="row print-dis-n">
+        <div class="col col-50">
+          <button class="cancel" (click)="hideCashModal()">{{'Cancel' | translate }} <ion-icon ios="ios-close" md="md-close"></ion-icon></button>
+        </div>
+        <div class="col col-50 text-right">
+          <button (click)="closeCheque()" class="button button-full  ion-chevron-right icon-right button-balanced make-payment">
+            {{'Make Payment' | translate }} <ion-icon name="arrow-forward"></ion-icon>
+
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

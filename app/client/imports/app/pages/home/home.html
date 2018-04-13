@@ -3,24 +3,75 @@
     <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-    <ion-title>
-      {{"page-home.title" | translate}}
-    </ion-title>
-    <login-buttons></login-buttons>
+    <div class="col col-20 username-w">
+      <h4>{{username}}</h4>
+    </div>
+    <div class="col col-20 ping pull-right text-right">
+      <h4>
+        {{'Synced' | translate}} 
+        <ion-icon style="color:#2ecc71" *ngIf="isSync" ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>
+        <ion-icon style="color:#e74c3c" *ngIf="!isSync" ios="ios-close-circle" md="md-close-circle"></ion-icon>
+      </h4>
+    </div>
   </ion-navbar>
 </ion-header>
 
 <div class="cashbox-view" scroll="false">
-  
-  <div class="login-wrapper" *ngIf=!user >
-    <login-buttons isDropdownOpen=true></login-buttons>
+
+  <div class="login-wrapper" *ngIf=!user>
+    <!-- <login-buttons isDropdownOpen=true></login-buttons> -->
+    <div class="login-buttons">
+      <div class="dropdown-toggle">
+
+      </div>
+      <div class="content-container">
+        <div class="accounts-close">Close</div>
+        <div>
+          <span *ngIf=  loggingIn>{{ 'Please wait' | translate }}...</span>
+          <span *ngIf= !loggingIn class="error">{{ loginMessage | translate }}</span>
+          <form *ngIf= !loggingIn class="login-buttons-login-form ng-dirty ng-touched ng-valid" novalidate="">
+            <div>
+              <label for="email">Username</label>
+              <input class="login-buttons-email-input" name="email" required="" type="email" [(ngModel)]="username">
+              <div>
+                <label for="password">Password</label>
+                <input class="login-buttons-password-input" name="password" required="" type="password" [(ngModel)]="password">
+              </div>
+            </div>
+            <div>
+              <button (click)="login()" class="login-button-login">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-    
+
   <div *ngIf=!!user class="cachbox-right-scrollw" style="width:100%">
     <div class="orders-w cachbox-left-scroll">
-      <cart></cart>
-    </div>    
+      <cart (syncChecked)="onSyncChecked($event)" ></cart>
+    </div>
     <products></products>
-    
   </div>
+  
+  <div class="new-sess-w" *ngIf="!!user" [hidden]="sessionFound">
+    <div class="modal cashbox-trmodal">
+      <h2>{{'Start New Session' | translate }}</h2>
+      <label class="item item-input">
+        <input type="number" name="amount" value=0 [(ngModel)]="openAmount" placeholder="{{'Amount in Cashbox' | translate}}">
+      </label>
+      <br>
+      <div class="row print-dis-n">
+        <div class="col col-50">
+          <button class="cancel" (click)="cancelCreateSession()">{{'Cancel' | translate }} <ion-icon ios="ios-close" md="md-close"></ion-icon></button>
+        </div>
+        <div class="col col-50 text-right">
+          <button (click)="createSession()" class="button button-full  ion-chevron-right icon-right button-balanced create-session">
+            {{'Create Session' | translate }} <ion-icon name="arrow-forward"></ion-icon>
+
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>  
 </div>

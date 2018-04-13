@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.atero.eprint" version="0.1.0">
+  <name>Eprint</name>
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+  <asset src="www/eprint.js" target="js/eprint.js"/>
+  <js-module src="www/eprint.js" name="eprint">
+    <clobbers target="eprint" />
+  </js-module>
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Eprint">
+        <param name="android-package" value="com.atero.plugin.Eprint"/>
+      </feature>
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.INTERNET"/>
+    </config-file>
+    
+    <source-file src="src/android/Eprint.java" target-dir="src/com/atero/plugin/"/>
+    <source-file src="libs/ePOS2.jar" target-dir="libs/" framework="true"/>
+    <source-file src="libs/armeabi/libepos2.so" target-dir="libs/armeabi/" framework="true"/>
+
+    <resource-file src="img/icon192192.png" target="res/drawable-hdpi/icon192192.png" />
+    <resource-file src="img/icon192192.png" target="res/drawable-mdpi/icon192192.png" />
+    <resource-file src="img/icon192192.png" target="res/drawable-xhdpi/icon192192.png" />
+    <resource-file src="img/icon192192.png" target="res/drawable-xxhdpi/icon192192.png" />
+
+  </platform>
+</plugin>
